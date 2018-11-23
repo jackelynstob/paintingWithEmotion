@@ -61,14 +61,14 @@ function Demo() {
 
   let player = AsyncPlayer();
   let graph = new Graph("#svg-curve");
-  let video_ids = ["EglYdO0k5nQ", "z63KGZE4rnM", "IV_ef2mm4G0", "dlNO2trC-mk", "lhzwmYRXPp4", "0kfLd52jF3Y"];
+  let video_ids = ["z63KGZE4rnM"];
 
   /** ==============================================================
    *                      Pubilc Methods
    *  ============================================================== */
 
-  /** Make the state of the Demo read only. */
-  this.state = () => state;
+  // /** Make the state of the Demo read only. */
+  // this.state = () => state;
 
   /** Start the Demo, it will begin loading all of the necesary functions. */
   this.start = () => {
@@ -444,133 +444,133 @@ function Demo() {
    *   Playback - methods associated with the PLAYBACK phase
    *  ============================================================== */
 
-  /** Transition the page into the PLAYBACK state. */
-  const transitionToPlayback = () => {
-    state = self.States.PLAYBACK;
-    detector.stop();
-
-    $(".alert").hide();
-
-    // focus on message
-    $("#lightbox").fadeIn(750, () => {
-      // start playback
-      initializePlayback();
-      $("#player").css("pointer-events", "");
-      $("#play-again").fadeIn(500, () => {
-        $("#lightbox").one("click", allowPlayback);
-      });
-      $("#btn-play-again").one("click", allowPlayback);
-    });
-  };
-  /** Start the playback, by adding a cursor that tracks the video. */
-  const initializePlayback = () => {
-    let cursor = graph.initializeCursor();
-    trackVideo();
-    // Set Drag Handlers
-    cursor
-      .call(d3.drag()
-        .on("drag", dragHandler)
-        .on("start",dragStartHandler)
-        .on("end",  dragEndHandler)
-      );
-    // Handle clicks to a particular moment in time
-    graph
-      .getCurveBox()
-      .on("click", graphClickHandler);
-  };
-
-  /** Handle the `try again`, and `got it` button transition. */
-  const allowPlayback = () => {
-    $("#lightbox").fadeOut(500);
-
-    let play_again_button = $("#btn-play-again");
-
-    play_again_button.fadeOut(500,() => {
-      play_again_button.replaceWith(() => {
-        return $("<button id='btn-play-again' class='btn btn-primary'>Try again</button>").fadeIn(500, () => {
-          setSpaceBarPlayBehvaior();
-          $("#btn-play-again").one("click", () => {
-            window.location.reload(false);
-          });
-        });
-      });
-    });
-  };
-
-  /** Add listeners for the spacebar, to allow controls for the video in playback. */
-  const setSpaceBarPlayBehvaior = () => {
-    document.onkeypress = (event) => {
-      if ((event || window.event).charCode == 32) {
-        if (player("getPlayingState")) {
-          player("pause");
-        } else {
-          player("resume");
-        }
-      }
-    };
-  };
-
-  /** Handler for `drag` event. */
-  const dragHandler = () => {
-    const x_coord = graph.clipX(d3.event.x);
-    const playback_time = graph.playbackFromX(x_coord);
-    graph.translateCursor(x_coord);
-    player("seek", playback_time);
-  };
-
-  /** Handler for `dragstart` event. */
-  const dragStartHandler = () => {
-    if (player("getPlayingState")) {
-      clearInterval(cursor_interval);
-      // Store the state of the player and pause it.
-      playing_swap = true;
-      player("pause");
-    }
-    graph.setMousePointerDragging();
-  };
-
-  /** Handler for `dragend` event. */
-  const dragEndHandler = () => {
-    if (playing_swap) {
-      player("resume");
-      playing_swap = false; //reset it to false after use
-
-      player("setPlayingState", true);
-      trackVideo();
-    }
-    graph.setMousePointerUndragging();
-  };
-
-  /** Handler for `click` event on graph. */
-  const graphClickHandler = function() {
-    const x_click = graph.clipX(d3.mouse(this)[0]);
-    const playback_time = graph.playbackFromX(x_click);
-
-    if (player("getPlayingState")) {
-      clearInterval(cursor_interval);
-      graph.translateCursor(x_click);
-      player("seek", playback_time);
-      trackVideo();
-    } else {
-      graph.translateCursor(x_click);
-      player("seek", playback_time);
-
-    }
-  };
-
-  /** Sets an interval for the graph cursor, such that it tracks the video's playing. */
-  const trackVideo = () => {
-    cursor_interval = setInterval(() => {
-      if (player("getPlayingState")) {
-        const x_coord = graph.playbackToX(player("getCurrentTime"));
-        graph.translateCursor(x_coord);
-      }
-    }, 50);
-  };
-
-  /** ==============================================================
-   *                      UTILITIES AND ALERTS
-   *  ============================================================== */
+  // /** Transition the page into the PLAYBACK state. */
+  // const transitionToPlayback = () => {
+  //   state = self.States.PLAYBACK;
+  //   detector.stop();
+  //
+  //   $(".alert").hide();
+  //
+  //   // focus on message
+  //   $("#lightbox").fadeIn(750, () => {
+  //     // start playback
+  //     initializePlayback();
+  //     $("#player").css("pointer-events", "");
+  //     $("#play-again").fadeIn(500, () => {
+  //       $("#lightbox").one("click", allowPlayback);
+  //     });
+  //     $("#btn-play-again").one("click", allowPlayback);
+  //   });
+  // };
+  // /** Start the playback, by adding a cursor that tracks the video. */
+  // const initializePlayback = () => {
+  //   let cursor = graph.initializeCursor();
+  //   trackVideo();
+  //   // Set Drag Handlers
+  //   cursor
+  //     .call(d3.drag()
+  //       .on("drag", dragHandler)
+  //       .on("start",dragStartHandler)
+  //       .on("end",  dragEndHandler)
+  //     );
+  //   // Handle clicks to a particular moment in time
+  //   graph
+  //     .getCurveBox()
+  //     .on("click", graphClickHandler);
+  // };
+  //
+  // /** Handle the `try again`, and `got it` button transition. */
+  // const allowPlayback = () => {
+  //   $("#lightbox").fadeOut(500);
+  //
+  //   let play_again_button = $("#btn-play-again");
+  //
+  //   play_again_button.fadeOut(500,() => {
+  //     play_again_button.replaceWith(() => {
+  //       return $("<button id='btn-play-again' class='btn btn-primary'>Try again</button>").fadeIn(500, () => {
+  //         setSpaceBarPlayBehvaior();
+  //         $("#btn-play-again").one("click", () => {
+  //           window.location.reload(false);
+  //         });
+  //       });
+  //     });
+  //   });
+  // };
+  //
+  // /** Add listeners for the spacebar, to allow controls for the video in playback. */
+  // const setSpaceBarPlayBehvaior = () => {
+  //   document.onkeypress = (event) => {
+  //     if ((event || window.event).charCode == 32) {
+  //       if (player("getPlayingState")) {
+  //         player("pause");
+  //       } else {
+  //         player("resume");
+  //       }
+  //     }
+  //   };
+  // };
+  //
+  // /** Handler for `drag` event. */
+  // const dragHandler = () => {
+  //   const x_coord = graph.clipX(d3.event.x);
+  //   const playback_time = graph.playbackFromX(x_coord);
+  //   graph.translateCursor(x_coord);
+  //   player("seek", playback_time);
+  // };
+  //
+  // /** Handler for `dragstart` event. */
+  // const dragStartHandler = () => {
+  //   if (player("getPlayingState")) {
+  //     clearInterval(cursor_interval);
+  //     // Store the state of the player and pause it.
+  //     playing_swap = true;
+  //     player("pause");
+  //   }
+  //   graph.setMousePointerDragging();
+  // };
+  //
+  // /** Handler for `dragend` event. */
+  // const dragEndHandler = () => {
+  //   if (playing_swap) {
+  //     player("resume");
+  //     playing_swap = false; //reset it to false after use
+  //
+  //     player("setPlayingState", true);
+  //     trackVideo();
+  //   }
+  //   graph.setMousePointerUndragging();
+  // };
+  //
+  // /** Handler for `click` event on graph. */
+  // const graphClickHandler = function() {
+  //   const x_click = graph.clipX(d3.mouse(this)[0]);
+  //   const playback_time = graph.playbackFromX(x_click);
+  //
+  //   if (player("getPlayingState")) {
+  //     clearInterval(cursor_interval);
+  //     graph.translateCursor(x_click);
+  //     player("seek", playback_time);
+  //     trackVideo();
+  //   } else {
+  //     graph.translateCursor(x_click);
+  //     player("seek", playback_time);
+  //
+  //   }
+  // };
+  //
+  // /** Sets an interval for the graph cursor, such that it tracks the video's playing. */
+  // const trackVideo = () => {
+  //   cursor_interval = setInterval(() => {
+  //     if (player("getPlayingState")) {
+  //       const x_coord = graph.playbackToX(player("getCurrentTime"));
+  //       graph.translateCursor(x_coord);
+  //     }
+  //   }, 50);
+  // };
+  //
+  // /** ==============================================================
+  //  *                      UTILITIES AND ALERTS
+  //  *  ============================================================== */
 
   /** Ignores it's input and returns null. Useful for ignore promise failures */
   const ignore = () => {};
